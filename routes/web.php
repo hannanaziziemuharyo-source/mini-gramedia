@@ -3,10 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BookCategoryController;
+use App\Http\Controllers\SubscriptionPackageController;
+use App\Models\SubscriptionPackage;
 
 // Route yang bisa diakses siapa saja (Guest & Login)
 Route::get('/home', function () {
-    return view('home');
+    $subscriptionPackages = SubscriptionPackage::take(3)->get();
+    return view('home', compact('subscriptionPackages'));
 })->name('home');
 
 // Route untuk pengguna yang belum login (Guest)
@@ -39,6 +42,8 @@ Route::middleware(['isLoggedIn'])->group(function () {
 
         //resource 
         Route::resource('kategori-buku', BookCategoryController::class);
+        Route::resource('paket-langganan', SubscriptionPackageController::class);
     });
 });
+
     

@@ -14,58 +14,62 @@
         <!-- END NAVBAR LOGO -->
 
         <div class="navbar-nav mx-auto w-50 align-items-center flex-row">
-            {{-- Dropdown Kategori --}}
-            <div class="dropdown me-2">
-                <a href="#" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">Kategori</a>
-                <div class="dropdown-menu dropdown-menu-card" style="min-width: 600px">
-                    <div class="p-2">
-                        @php
-                            $navCategories = \App\Models\BookCategory::all();
-                        @endphp
-                        @if($navCategories->isNotEmpty())
-                            <div class="row g-2">
-                                @foreach($navCategories as $navCat)
-                                    <div class="col-3">
-                                        <div class="card py-2">
-                                            <div class="card-body p-2 text-center">
-                                                <a href="#" class="text-reset d-block">{{ $navCat->name }}</a>
+            @if(Auth::check() && Auth::user()->role == 'admin')
+                <li class="nav-item">
+                    <a href="{{ route('admin.dashboard')}}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.kategori-buku.index')}}" class="nav-link {{request()->routeIs('admin.kategori-buku.index') ? 'active' : '' }}">Kategori Buku</a>
+                </li>
+                <li class="nav-item">
+                   <a href="{{ route('admin.paket-langganan.index') }}" class="nav-link {{ request()->routeIs('admin.paket-langganan.index') ? 'active' : '' }}">Paket Langganan</a>
+                </li>
+                <li class="nav-item">
+                    <a href="" class="nav-link">Buku</a>
+                </li>
+            @else
+                {{-- Dropdown Kategori --}}
+                <div class="dropdown me-2">
+                    <a href="#" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">Kategori</a>
+                    <div class="dropdown-menu dropdown-menu-card" style="min-width: 600px">
+                        <div class="p-2">
+                            @php
+                                $navCategories = \App\Models\BookCategory::all();
+                            @endphp
+                            @if($navCategories->isNotEmpty())
+                                <div class="row g-2">
+                                    @foreach($navCategories as $navCat)
+                                        <div class="col-3">
+                                            <div class="card py-2">
+                                                <div class="card-body p-2 text-center">
+                                                    <a href="#" class="text-reset d-block">{{ $navCat->name }}</a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @else
-                            <p class="text-muted text-center mb-0 py-2">Belum ada kategori tersedia</p>
-                        @endif
-
-                        {{-- Link khusus Admin --}}
-                        @auth
-                            @if(Auth::user()->role == 'admin')
-                                <div class="border-top mt-2 pt-2">
-                                    <a href="{{ route('admin.kategori-buku.index') }}" class="btn btn-sm btn-outline-primary w-100" id="link-kelola-kategori">
-                                        <i class="fa-solid fa-gear me-1"></i> Kelola Semua Kategori
-                                    </a>
+                                    @endforeach
                                 </div>
+                            @else
+                                <p class="text-muted text-center mb-0 py-2">Belum ada kategori tersedia</p>
                             @endif
-                        @endauth
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            {{-- Search Bar --}}
-            <div class="input-icon w-100">
-                <input type="text" class="form-control form-control-rounded"
-                    placeholder="Cari judul, produk, buku, penulis..." />
-                <span class="input-icon-addon">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <circle cx="10" cy="10" r="7" />
-                        <line x1="21" y1="21" x2="15" y2="15" />
-                    </svg>
-                </span>
-            </div>
+                {{-- Search Bar --}}
+                <div class="input-icon w-100">
+                    <input type="text" class="form-control form-control-rounded"
+                        placeholder="Cari judul, produk, buku, penulis..." />
+                    <span class="input-icon-addon">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <circle cx="10" cy="10" r="7" />
+                            <line x1="21" y1="21" x2="15" y2="15" />
+                        </svg>
+                    </span>
+                </div>
+            @endif
 
             {{-- Icon Keranjang --}}
             <div class="ms-3">

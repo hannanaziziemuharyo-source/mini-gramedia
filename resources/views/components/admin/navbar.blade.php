@@ -1,50 +1,87 @@
-<div class="card mb-4 border-0 shadow-sm" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
-    <div class="card-body py-3 px-4 text-white">
-        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
-            <div class="d-flex align-items-center gap-3">
-                <div class="bg-white text-primary rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
-                    <i class="fa-solid fa-book-bookmark fs-3"></i>
-                </div>
-                <div>
-                    <div class="d-flex align-items-center gap-2">
-                        <h3 class="m-0 fw-bold text-white">Gramedia Admin Panel</h3>
-                        <span class="badge bg-warning text-dark fw-bold">Admin Mode</span>
-                    </div>
-                    <small class="text-white-50">Kelola inventaris buku, kategori, transaksi, dan data pelanggan Gramedia E-Books</small>
-                </div>
-            </div>
+{{-- NAVBAR --}}
+        <ul class="navbar-nav mx-auto w-50">
+            @if (Auth::check() && Auth::user()->role == "admin")
+            <li class="nav-item-active">
+                <a href="{{ route('admin.dashboard')}}" class="nav-link">Dashboard</a>
+            </li>
+                {{-- route()->routeIs : mengecek apakah route saat ini sesuai dengan route yg ditentukan.
+                Fungsinya untuk memberikan class active yg nantinya akan berwarna biru pd link yg sedang aktif --}}
+                <li class="nav-item">
+                    <a href="{{ route('admin.kategori-buku.index')}}" class="nav-link {{request()
+                    ->routeIs('admin.kategori-buku.index') ? 'active' : '' }}">Kategori Buku</a>
+                </li>
+                  <li class="nav-item">
+                   <a href="{{ route('admin.paket-langganan.index') }}"
+                    class="nav-link {{ request()->routeIs('admin.paket-langganan.index') ? 'active' : '' }}">
+                        Paket Langganan</a>
+                </li>
+                  <li class="nav-item">
+                    <a href="" class="nav-link">Buku</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.pelanggan.create') }}" class="nav-link {{ request()->routeIs('admin.pelanggan.create') ? 'active' : '' }}">Pelanggan</a>
+                </li>
 
-            <div class="d-flex align-items-center gap-2">
-                <a href="{{ route('home') }}" class="btn btn-sm btn-light text-primary fw-semibold">
-                    <i class="fa-solid fa-store me-1"></i> Ke Toko Utama
+            @else
+            {{-- DROPDOWN KATEGORI --}}
+            <div class="dropdown mt-2">
+
+                <a
+                    href="#"
+                    class="btn btn-light dropdown-toggle pt-2 me-2"
+                    data-bs-toggle="dropdown"
+                >
+                    Kategori
                 </a>
-                <span class="text-white-50 d-none d-md-inline">|</span>
-                <span class="text-white fw-medium d-none d-md-inline">
-                    <i class="fa-solid fa-user-shield me-1"></i> {{ Auth::user()->name ?? 'Administrator' }}
-                </span>
-            </div>
-        </div>
 
-        {{-- Navigasi Menu Admin --}}
-        <div class="d-flex flex-wrap gap-2 mt-3 pt-3 border-top border-white-50">
-            <a href="{{ route('admin.dashboard') }}" class="btn btn-sm btn-outline-light active">
-                <i class="fa-solid fa-gauge-high me-1"></i> Dashboard
-            </a>
-            <a href="#" class="btn btn-sm btn-outline-light">
-                <i class="fa-solid fa-book me-1"></i> Kelola Buku
-            </a>
-            <a href="{{ route('admin.kategori-buku.index') }}" class="btn btn-sm btn-outline-light {{ request()->routeIs('admin.kategori-buku.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-layer-group me-1"></i> Kategori
-            </a>
-            <a href="#" class="btn btn-sm btn-outline-light">
-                <i class="fa-solid fa-receipt me-1"></i> Transaksi
-            </a>
-            <a href="#" class="btn btn-sm btn-outline-light">
-                <i class="fa-solid fa-crown me-1"></i> Paket Langganan
-            </a>
-            <a href="#" class="btn btn-sm btn-outline-light">
-                <i class="fa-solid fa-users me-1"></i> Pengguna
-            </a>
-        </div>
-    </div>
-</div>
+                <div
+                    class="dropdown-menu dropdown-menu-card"
+                    style="min-width: 600px"
+                >
+
+                    <div class="p-3">
+
+                        <div class="row g-2">
+
+                            <div class="col-3">
+                                <div class="card py-2">
+                                    <div class="card-body p-2 text-center">
+                                        Kategori 1
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <div class="card py-2">
+                                    <div class="card-body p-2 text-center">
+                                        Kategori 2
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <div class="card py-2">
+                                    <div class="card-body p-2 text-center">
+                                        Kategori 3
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <div class="card py-2">
+                                    <div class="card-body p-2 text-center">
+                                        Kategori 4
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            @endif
+        </ul>

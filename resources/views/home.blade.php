@@ -109,50 +109,31 @@
             </a>
         </div>
 
-        {{-- PAKET LANGGANAN --}}
+        {{-- DAFTAR LANGGANAN --}}
         <div class="mt-4">
-            <div class="d-flex align-items-center gap-2 mb-3">
-                <span class="badge bg-yellow text-yellow-fg p-2"><i class="fa-solid fa-crown fs-3"></i></span>
-                <h2 class="m-0 text-dark">Paket Langganan</h2>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card h-100" style="background: linear-gradient(135deg, #ffffff 0%, #a7f1c6 100%)">
-                        <div class="card-body d-flex flex-column justify-content-center align-items-center text-dark">
-                            <h2 class="fw-bold">NON-FICTION</h2>
-                            <p class="text-secondary fw-bold mb-0">PACKAGE</p>
-                            <div class="text-center mt-2">
-                                Rp. <span class="fs-2 fw-bold text-warning">49.000</span><br>
-                                <span class="fw-bold text-secondary">/30 Days</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100" style="background: linear-gradient(135deg, #ffffff 0%, #a7f1c6 100%)">
-                        <div class="card-body d-flex flex-column justify-content-center align-items-center text-dark">
-                            <h2 class="fw-bold">FICTION</h2>
-                            <p class="text-secondary fw-bold mb-0">PACKAGE</p>
-                            <div class="text-center mt-2">
-                                Rp. <span class="fs-2 fw-bold text-warning">49.000</span><br>
-                                <span class="fw-bold text-secondary">/30 Days</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100" style="background: linear-gradient(135deg, #ffffff 0%, #a7f1c6 100%)">
-                        <div class="card-body d-flex flex-column justify-content-center align-items-center text-dark">
-                            <h2 class="fw-bold">PREMIUM</h2>
-                            <p class="text-secondary fw-bold mb-0">PACKAGE</p>
-                            <div class="text-center mt-2">
-                                Rp. <span class="fs-2 fw-bold text-warning">99.000</span><br>
-                                <span class="fw-bold text-secondary">/30 Days</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <h2 class="m-0 text-dark mb-3">Daftar Langganan</h2>
+            @if (isset($subscriptionPackages) && $subscriptionPackages->count() > 0)
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>Jenis / Langganan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($subscriptionPackages as $package)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $package->name }}</td>
+                                <td>{{ $package->description }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @else
+                <p class="text-secondary">Belum ada data langganan.</p>
+            @endif
         </div>
 
         {{-- REKOMENDASI BUKU --}}

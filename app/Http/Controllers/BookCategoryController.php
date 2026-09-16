@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\BookCategory;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class BookCategoryController extends Controller
 {
@@ -12,8 +13,10 @@ class BookCategoryController extends Controller
      */
     public function index()
     {
-        $categories = BookCategory::withCount('books')->latest()->get();
-        return view('book-categorys.index', compact('categories'));
+        $bookCategory = BookCategory::all();
+        $categories = $bookCategory;
+        $bookCategories = $bookCategory;
+        return view('book-categorys.index', compact('bookCategory', 'categories', 'bookCategories'));
     }
 
     /**
@@ -29,20 +32,12 @@ class BookCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255|unique:book_categories,name',
-        ], [
-            'name.required' => 'Nama kategori buku wajib diisi.',
-            'name.string' => 'Nama kategori buku harus berupa teks.',
-            'name.max' => 'Nama kategori buku maksimal 255 karakter.',
-            'name.unique' => 'Nama kategori buku ini sudah terdaftar.',
+        $validateData = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
         ]);
 
-        BookCategory::create([
-            'name' => $request->name,
-        ]);
-
-        return redirect()->route('admin.kategori-buku.index')->with('success', 'Kategori buku berhasil ditambahkan!');
+        BookCategory::create($validateData);
+        return redirect()->route('admin.kategori-buku.index')->with('success', 'Kategori buku berhasil ditambahkan.');
     }
 
     /**
@@ -58,7 +53,9 @@ class BookCategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $bookCategory = BookCategory::findOrFail($id);
+        $category = $bookCategory;
+        return view('book-categorys.edit', compact('bookCategory', 'category'));
     }
 
     /**
@@ -66,7 +63,14 @@ class BookCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $bookCategory = BookCategory::findOrFail($id);
+
+        $validateData = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+        ]);
+
+        $bookCategory->update($validateData);
+        return redirect()->route('admin.kategori-buku.index')->with('success', 'Kategori buku telah berhasil diubah.');
     }
 
     /**
@@ -74,6 +78,9 @@ class BookCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $bookCategory = BookCategory::findOrFail($id);
+        $bookCategory->delete();
+
+        return redirect()->route('admin.kategori-buku.index')->with('success', 'Kategori buku telah berhasil dihapus.');
     }
 }

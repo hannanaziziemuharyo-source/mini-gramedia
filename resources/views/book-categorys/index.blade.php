@@ -46,7 +46,7 @@
             </h3>
         </div>
         <div class="table-responsive">
-            <table class="table table-vcenter card-table table-hover">
+            <table class="table table-bordered table-vcenter card-table table-hover">
                 <thead class="table-light">
                     <tr>
                         <th class="w-1">No</th>
@@ -57,23 +57,39 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($categories as $index => $category)
-                        <tr>
-                            <td class="text-secondary">{{ $index + 1 }}</td>
-                            <td class="fw-semibold text-dark">{{ $category->name }}</td>
-                            <td>
-                                <span class="badge bg-blue-lt">
-                                    {{ $category->books_count ?? 0 }} Buku
-                                </span>
-                            </td>
-                            <td class="text-secondary">
-                                {{ $category->created_at ? $category->created_at->format('d M Y, H:i') : '-' }}
-                            </td>
-                            <td class="text-center">
-                                <span class="badge bg-secondary-lt">Tersedia</span>
-                            </td>
-                        </tr>
-                    @empty
+                    {{-- pengguna foreach karena bookCategories merupakan array multidimensi maka
+                        bookCategory akan berupa aray asosiatif. mengaksesnya dengan menggunakan -> atau [] --}}
+                    @if ($categories->count() > 0)
+                        @foreach ($categories as $category)
+                            <tr>
+                                {{-- loop iteration fungsinya untuk menampilkan nomor urut --}}
+                                <td class="text-secondary">{{ $loop->iteration }}</td>
+                                <td class="fw-semibold text-dark">{{ $category->name }}</td>
+                                <td>
+                                    <span class="badge bg-blue-lt">
+                                        {{ $category->books_count ?? 0 }} Buku
+                                    </span>
+                                </td>
+                                <td class="text-secondary">
+                                    {{ $category->created_at ? $category->created_at->format('d M Y, H:i') : '-' }}
+                                </td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a href="{{ route('admin.kategori-buku.edit', $category->id) }}" class="btn btn-sm btn-outline-warning" title="Edit Kategori">
+                                            <i class="fa-solid fa-pen-to-square me-1"></i> Edit
+                                        </a>
+                                        <form action="{{ route('admin.kategori-buku.destroy', $category->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah kamu yakin ingin menghapus kategori \'{{ $category->name }}\'?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus Kategori">
+                                                <i class="fa-solid fa-trash me-1"></i> Hapus
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
                         <tr>
                             <td colspan="5" class="text-center py-5 text-secondary">
                                 <i class="fa-solid fa-folder-open fs-1 text-muted mb-3 d-block"></i>
@@ -83,7 +99,7 @@
                                 </a>
                             </td>
                         </tr>
-                    @endforelse
+                    @endif
                 </tbody>
             </table>
         </div>
