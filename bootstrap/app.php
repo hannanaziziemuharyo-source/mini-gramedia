@@ -12,7 +12,16 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias([
+            'isLoggedIn' => App\Http\Middleware\IsLoggedIn::class,
+            'isloggedin' => App\Http\Middleware\IsLoggedIn::class,
+            'isGuest' => App\Http\Middleware\IsGuest::class,
+            'isguest' => App\Http\Middleware\IsGuest::class,
+            'isAdmin' => App\Http\Middleware\IsAdmin::class,
+            'isadmin' => App\Http\Middleware\IsAdmin::class,
+            'auth.loggedIn' => App\Http\Middleware\IsLoggedIn::class,
+            'auth.guest' => App\Http\Middleware\IsGuest::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
